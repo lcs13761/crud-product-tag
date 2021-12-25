@@ -5,7 +5,7 @@ A aplicação foi desenvolvida em php puro, usando alguns plugin é template do 
 ### Configuração
 <div>
 Modifique o volume:
-<p> - "adicionar o caminho do arquivo:/var/www/html/" </p>
+<p> - "adicione o caminho do arquivo:/var/www/html/" </p>
 </div>
 <div>
 <p> Modifique as configurações do banco de dados, no arquivo source/boot/config.php e no próprio docker-compose</p>
