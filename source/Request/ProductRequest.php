@@ -21,21 +21,13 @@ class ProductRequest extends FormRequest
             case 'POST':
             {
                 return [
-                    'product' => ['required', 'string'],
-                    'category_id' => ['required','numeric'],
-                    'value' => ['required', 'float'],
-                    'size' => ['required'],
-                    'qts' => ['required', 'numeric']
+                    'name' => ['required', 'string','unique:name,product'],
                 ];
             }
             case 'PUT':
             case 'PATH':{
                 return [
-                    'product' => ['required', 'string','unique:product,product,' . $this->id .',id'],
-                    'category_id' => ['required','numeric'],
-                    'value' => ['required', 'float'],
-                    'size' => ['required'],
-                    'qts' => ['required', 'numeric']
+                    'name' => ['required', 'string','unique:name,product,' . $this->id .',id'],
                 ];
             }
             default:

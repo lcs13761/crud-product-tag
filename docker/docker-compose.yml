@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "/mnt/e/xampp/htdocs/Project4:/var/www/html/"
+      - "/mnt/e/xampp/htdocs/Projet:/var/www/html/"
       - "./webserver/nginx.conf:/etc/nginx/nginx.conf"
     links:
       - php
@@ -20,7 +20,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - "/mnt/e/xampp/htdocs/Project4:/var/www/html/"
+      - "/mnt/e/xampp/htdocs/Projet:/var/www/html/"
     # command: php -S 0.0.0.0:9000 -t public/
     # links:
       # - mysql
@@ -28,12 +28,12 @@ services:
     image: mysql:latest
     container_name: mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql:/var/lib/mysql/
     environment:
-      MYSQL_DATABASE: 'lutest'
-      MYSQL_PASSWORD: '0131'
+      MYSQL_DATABASE: 'project'
+      MYSQL_PASSWORD: 'root'
       MYSQL_ROOT_PASSWORD: 'root'
 volumes:
   mysql:

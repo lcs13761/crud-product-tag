@@ -1,9 +1,9 @@
 <?php
 
-namespace Validate;
+namespace Support\Validate;
 
-use TestValidate;
 use PHPUnit\Framework\TestCase;
+use TestValidate;
 
 class TestValidateForm extends TestCase
 {

@@ -2,38 +2,23 @@
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <div class="dropdown">
-        <a class="sidebar-brand  dropdown-toggle d-flex align-items-center justify-content-center" href="#"
-           id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img class="img-profile  icon-circle "
-                 src="<?= auth()->photo ?? theme('assets/img/undraw_profile.svg', CONF_VIEW_ADMIN)  ?>">
-            <div class="sidebar-brand-text mx-3"><?= auth()->name ?></div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right shadow " aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">
-                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                Perfil
-            </a>
-            <a class="dropdown-item" href="#">
-                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                Configurações
-            </a>
-            <a class="dropdown-item" href="#">
-                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                Atividades
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="logout">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                Sair
-            </a>
-        </div>
-    </div>
+   <div class="dropdown">
+       <a class="sidebar-brand d-flex dropdown-toggle align-items-center justify-content-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <img class="img-profile  icon-circle " src="<?= theme('assets/img/undraw_profile.svg', CONF_VIEW_ADMIN)  ?>">
+           <div class="sidebar-brand-text mx-3"><?= name( auth()->name) ?></div>
+       </a>
+       <div class="dropdown-menu dropdown-menu-right shadow " aria-labelledby="userDropdown">
+           <a class="dropdown-item" href="<?= url('logout') ?>">
+               <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+               Sair
+           </a>
+       </div>
+   </div>
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= url('/admin');?>">
+        <a class="nav-link" href="<?= url('/'); ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -41,27 +26,15 @@
     <hr class="sidebar-divider">
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= url('/admin/product') ?>">
+        <a class="nav-link" href="<?= url('product.index') ?>">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Produtos</span></a>
     </li>
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= url('category.index') ?>">
+        <a class="nav-link" href="<?= url('tag.index') ?>">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Categorias</span></a>
-    </li>
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Administradores</span></a>
-    </li>
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Feedbacks</span></a>
+            <span>TAGS</span></a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

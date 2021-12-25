@@ -1,4 +1,4 @@
-<?php $v->layout("web/template/layout"); ?>
+<?php $v->layout("web/template/assets"); ?>
 
 <div class="container">
 
@@ -13,29 +13,25 @@
                             <h1 class="h4 text-gray-900 mb-4">Criar Conta!</h1>
                         </div>
                         <?= errors_validation() ?>
-                        <form name="login" class="d-flex flex-column" method="POST" action="<?= url("/user/store"); ?>">
+                        <form name="login" class="d-flex flex-column" method="POST" action="<?= url("user.store"); ?>">
                             <?= csrf_field(); ?>
                             <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0 ">
-                                    <input type="text" class="form-control form-control-user p-2" id="exampleFirstName"
-                                           placeholder="Primeiro nome">
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user  p-2" id="exampleLastName"
-                                           placeholder="Ultimo nome">
+                                <div class="col-sm-12 mb-3 mb-sm-0 ">
+                                    <input type="text" name="name" class="form-control form-control-user p-2" id="exampleFirstName"
+                                           placeholder="Nome">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control form-control-user  p-2" id="exampleInputEmail"
+                                <input type="email" name = 'email' class="form-control form-control-user  p-2" id="exampleInputEmail"
                                        placeholder="E-mail">
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control form-control-user  p-2"
+                                    <input type="password" name ='password' class="form-control form-control-user  p-2"
                                            id="exampleInputPassword" placeholder="Senha">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control form-control-user  p-2"
+                                    <input type="password" name="password_confirmation"  class="form-control form-control-user  p-2"
                                            id="exampleRepeatPassword" placeholder="Repita senha">
                                 </div>
                             </div>

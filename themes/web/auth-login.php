@@ -1,4 +1,4 @@
-<?php $v->layout("web/template/layout"); ?>
+<?php $v->layout("web/template/assets"); ?>
 
 
 <?php $v->start("styles"); ?>
@@ -22,38 +22,28 @@
                                 <h1 class="h4 text-gray-900 mb-4">Bem vindo de volta!</h1>
                             </div>
                             <?= errors_validation() ?>
-                            <form class="user" method="post" action = 'login'>
+                            <form class="user" method="post" action = '<?= url('login.store') ?>'>
                             <?= csrf_field(); ?>
                                 <div class="form-group">
-                                    <input  type="email" class="form-control form-control-user"
+                                    <input  type="email" name = 'email' class="form-control form-control-user"
                                         id="exampleInputEmail" required aria-describedby="emailHelp"
                                         placeholder="Insira o endereço de e-mail...">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-user"
+                                    <input type="password" name = 'password' class="form-control form-control-user"
                                         id="exampleInputPassword" placeholder="Senha" required>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox small">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck">
+                                        <input type="checkbox" name = 'remember' class="custom-control-input" id="customCheck">
                                         <label class="custom-control-label" for="customCheck">Lembrar-me?</label>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
                                     Login
                                 </button>
-                                <hr>
-                                <a href="/login/google" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Login with Google
-                                </a>
-                                <a href="#" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                </a>
                             </form>
                             <hr>
-                            <div class="text-center">
-                                <a class="small  text-decoration-none" href="<?= url('forgot.index') ?>">Esqueceu sua senha?</a>
-                            </div>
                             <div class="text-center">
                                 <a class="small  text-decoration-none" href="<?= url('user.create') ?>">Crie a sua conta aqui!</a>
                             </div>

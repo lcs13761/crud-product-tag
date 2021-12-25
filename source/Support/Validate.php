@@ -21,6 +21,7 @@ class Validate
                     if ($valueValidated == "email") self::email($request[$key], $key);
                     if ($valueValidated == "numeric") self::numeric($request[$key], $key);
                     if ($valueValidated == "float") self::float($request[$key], $key);
+                    if($valueValidated == "confirmed") self::confirmed($request);
                     if ($valueValidated == "string") self::string($request[$key], $key);
                     if (str_contains($valueValidated, "unique:")) self::unique($valueValidated, $request[$key], $key);
                 }
@@ -28,6 +29,21 @@ class Validate
         }
         session()->set("errors", self::$errors);
         return self::$valid;
+    }
+
+    private static function confirmed($request){
+        $request = (object)$request;
+        if(!isset($request->password_confirmation)){
+            self::$valid = false;
+            self::$errors[] = "Confirmed password is required";
+            return;
+        }
+
+        if($request->password != $request->password_confirmation){
+            self::$valid = false;
+            self::$errors[] = "Confirmed password is different from the password";
+            return;
+        }
     }
 
     private static function notFound(string|int $key): void

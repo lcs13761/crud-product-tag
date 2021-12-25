@@ -32,9 +32,6 @@
 
 <script src="<?= theme('assets/bootstrap/js/bootstrap.bundle.min.js', CONF_VIEW_ADMIN) ?>"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="<?= theme('assets/jquery-easing/jquery.easing.min.js', CONF_VIEW_ADMIN) ?>"></script>
-
 <!-- Custom scripts for all pages-->
 <script src="<?= theme('assets/js/sb-admin-2.min.js', CONF_VIEW_ADMIN) ?>"></script>
 

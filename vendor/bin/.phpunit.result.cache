@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Support\\Migration\\TestMigration::testCreateTable":3,"Support\\Migration\\TestMigration::testBd":3},"times":{"Support\\Migration\\TestMigration::testCreateTable":0.361,"Support\\Migration\\TestMigration::testBd":2.589}}

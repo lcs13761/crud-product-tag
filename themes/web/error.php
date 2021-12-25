@@ -1,4 +1,4 @@
-<?php $v->layout("web/template/layout"); ?>
+<?php $v->layout("web/template/assets"); ?>
 
 
 <div class="container-fluid my-5">

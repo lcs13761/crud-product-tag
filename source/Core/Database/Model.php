@@ -7,7 +7,7 @@ abstract class Model
 {
     protected array $protected = [];
 
-    protected string $table = '';
+    protected string $table = 'users';
 
     protected $data;
 
@@ -39,7 +39,11 @@ abstract class Model
         $this->data->$name = $value;
     }
 
-
+    public static function __callStatic($method,$args){
+        $called = get_called_class();
+        $class = new $called();
+        return $class->$method(...$args);
+    }
 
     /**
      * @param $name
@@ -59,6 +63,8 @@ abstract class Model
         return ($this->data->$name ?? null);
     }
 
+
+
    public function data(): ?object
     {
         return $this->data;
@@ -66,27 +72,20 @@ abstract class Model
 
     public function lastID()
     {
-        $this->query = "SELECT  LAST_INSERT_ID()";
-
+        $this->query = "SELECT LAST_INSERT_ID()";
         return $this;
     }
 
-    public function auth(string $email)
+    protected function manyToMany()
     {
-        $this->query = "SELECT * FROM {$this->table} WHERE email = :email";
-        parse_str("email={$email}", $this->params);
-        return $this->fetch();
+        $this->query = "SELECT * FROM product p JOIN product_tag tg ON p.id = tg.product_id JOIN tag t ON tg.tag_id = t.id";
+        return $this->fetch(true);
     }
+
 
     protected function all(){
         $this->query = "SELECT * FROM " . $this->table;
         return $this->fetch(true);
-    }
-
-    public static function __callStatic($method,$args){
-       $called = get_called_class();
-       $class = new $called();
-       return $class->$method(...$args);
     }
 
     protected function find(int|string $id): mixed
@@ -124,17 +123,17 @@ abstract class Model
         }
     }
 
-    /**define o limit para exibir */
-    final public function limit(int $limit): Model
+    /**define o limit para exibir
+     * @param int $limit
+     * @return Model|null
+     */
+    final public function limit(int $limit): ?Model
     {
         try {
-
             $this->limit = " LIMIT {$limit}";
         } catch (\PDOException $exception) {
-            redirect("/ops/problemas");
+            return null;
         }
-
-
         return $this;
     }
 
@@ -152,12 +151,46 @@ abstract class Model
         return $stmt->rowCount();
     }
 
+    protected  function  toBelongsToMany(string $foreignKey ,string $foreignKey2,string $table){
+        $this->foreignKey = $foreignKey;
+        $this->foreignKey2 = $foreignKey2;
+        $this->fillable = [$foreignKey,$foreignKey2];
+        $this->table = $table;
+        return $this;
+    }
+
+    public function sync(array $values): static
+    {
+        $this->removeManyToMany();
+        $this->attach($values);
+        return $this;
+    }
+
+    private function removeManyToMany(): void
+    {
+
+        $query = $this->foreignKey  . '=' . $this->id;
+        $this->delete($query);
+
+    }
+
+    public function attach(array $values){
+        $id = $this->id;
+        foreach ($values as $key => $value){
+            $save = array(
+                $this->foreignKey => $id,
+                $this->foreignKey2 => $value
+            );
+
+            $this->create($save);
+        };
+    }
+
     final public function fetch(bool $all = false): mixed
     {
         try {
             $stmt = Connect::getInstance()->prepare($this->query . $this->order . $this->limit . $this->offset);
             $stmt->execute($this->params);
-
             if (!$stmt->rowCount()) {
                 return null;
             }
@@ -167,43 +200,41 @@ abstract class Model
             }
             return $stmt->fetchObject(static::class);
         } catch (\PDOException $exception) {
-            return $exception;
+            return null;
         }
     }
 
-    final protected  function create(array|object $values): bool|string|null
+    final protected function create(array|object $values): Model|null
     {
         try {
-
-            $save = [];
-            foreach ($values as $key => $value) {
-                in_array($key, $this->fillable) ? $save[$key] = $value : "";
-            }
-
+            $save = $this->filterValue($values);
             $columns = implode(", ", array_keys($save));
             $values = ":" . implode(", :", array_keys($save));
             $stmt = Connect::getInstance()->prepare("INSERT INTO {$this->table} ({$columns}) VALUES ({$values})");
             $stmt->execute($save);
             $id = Connect::getInstance()->lastInsertId();
-            $this->data = $this->find($id);
-            return $id;
+            if($id){
+                $this->data = $this->find($id);
+            }
+            return $this;
         } catch (\PDOException $exception) {
-            return $exception;
+            return null;
         }
     }
 
-    final public function update(?array $data = null): ?int
+    final public function update(?array $data = null)
     {
         try {
             $dataSet =  $this->filter($data);
             $dataSet = implode(", ", $dataSet);
+            $data = $this->filterValue($data);
             $stmt = Connect::getInstance()->prepare("UPDATE {$this->table} SET {$dataSet} WHERE id = :id");
             $stmt->bindValue(":id" , $this->id);
             parse_str("id={$this->id}",$this->params);
             $stmt->execute(array_merge($data,$this->params));
-            return ($stmt->rowCount() ?? 1);
+            return $this;
         } catch (\PDOException $exception) {
-            return null;
+            return $exception;
         }
     }
 
@@ -212,7 +243,7 @@ abstract class Model
      * @param string|null $params
      * @return bool
      */
-    final public function delete(?string $terms, ?string $params):bool
+    final public function delete(?string $terms, ?string $params = null):bool
     {
         try {
             $stmt = Connect::getInstance()->prepare("DELETE FROM {$this->table} WHERE {$terms}");
@@ -233,6 +264,15 @@ abstract class Model
                 return false;
         }
         return $this->delete("id = :id","id={$this->id}");
+    }
+
+
+    private function filterValue(array $values){
+        $save = [];
+        foreach ($values as $key => $value) {
+            in_array($key, $this->fillable) ? $save[$key] = $value : "";
+        }
+        return $save;
     }
 
     /**

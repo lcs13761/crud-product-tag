@@ -1,43 +1,33 @@
-### Project made with bootstrap, css, php, javascript, html. It is a portfolio site for product display, with product display pages in detail, in addition to the administration section, where changes can be made to the bane, questions and answers, inclination and product editing.
-| [pt-BR](README.pt-BR.md) | en-US - this file |
-|---|---|
+#product tag com docker
 
-required .htaccess for removing routes;
+A aplicação foi desenvolvida em php puro, usando alguns plugin é template do bootstrap.
 
-## .htaccess
+### Configuração
+<div>
+Modifique o volume:
+<p> - "adicionar o caminho do arquivo:/var/www/html/" </p>
+</div>
+<div>
+<p> Modifique as configurações do banco de dados, no arquivo source/boot/config.php e no próprio docker-compose</p>
+</div>
+<div>
+Após modificar os arquivos, é necessario a criação das tabelas no banco de dados, o arquivo bd.sql,
+possui as tabelas do projeto.
+</div>
 
-```apacheconf
-RewriteEngine On
-Options All -Indexes
+### Utilidade
 
-# ROUTER WWW Redirect.
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# ROUTER HTTPS Redirect
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# ROUTER URL Rewrite
-RewriteCond %{SCRIPT_FILENAME} !-f
-RewriteCond %{SCRIPT_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?route=/$1
-```
-## Index:
+<div> A aplição possui um sistema de login, para pode acessar o dashboard, é necessario registar um usuario.</div>
 
 
-In the index are the routes of the pages, as well as your posts. Web.php is responsible for making all the display of the page, The admin page is divided into its functionality, such as editing the image of the content, changing the banner, in addition to changing the image of the administrator
+## Dashboard 
 
-The image below shows the home display on the desktop, on mobile.
+<div> Possui os relatorios relacionados a ultilização das tags para cada produto</div>
 
-![home](/readmeImag/home.png)
-![home](/readmeImag/homeMobile.png)
+## Produtos
 
-And the image below shows a preview of the admin tab
-![painel](/readmeImag/painel.png)
-![painel](/readmeImag/painelMobile.png)
+<div> lista todos os produtos , com as tags , com a opção de editar o produto e excluir</div>
 
+## tags
 
-
-
+<div> lista todas as tags , com a opção de editar a tag e excluir</div>

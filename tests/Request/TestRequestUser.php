@@ -5,7 +5,7 @@ require __DIR__ . "/../Validate/TestValidateForm.php";
 
 use JetBrains\PhpStorm\ArrayShape;
 use PHPUnit\Framework\TestCase;
-use Validate\TestValidateForm;
+use Support\Validate\TestValidateForm;
 
 
 class TestRequestUser extends TestCase

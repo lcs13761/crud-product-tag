@@ -13,7 +13,11 @@ class Session
         
         if(!session_id()){
             session_start();
-        };
+        }
+
+        if(isset($_COOKIE['authUser'])){
+            $this->set("authUser",base64_decode($_COOKIE['authUser']));
+        }
     }
 
         /**

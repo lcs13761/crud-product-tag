@@ -39,7 +39,6 @@
                     url: route,
                     data: {_method: 'delete', _token: '{{csrf_token()}}'},
                     success: function (msg) {
-                        console.log(msg);
                         if (msg['status'] == 'success') {
                             if(type === 'td'){
                                 $(e).closest('tr').addClass('animated fadeOutDown')

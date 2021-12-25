@@ -6,7 +6,7 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Url;
 use Pecee\Http\Response;
 use Pecee\Http\Request;
-use Source\Models\User;
+use Source\Models\Auth;
 
 if (!function_exists('abort')) {
 
@@ -100,27 +100,11 @@ function url_back(): string
  */
 function theme(string $path = null,$theme =  CONF_VIEW_THEME): string
 {
-    if (strpos($_SERVER["HTTP_HOST"], "localhost")) {
-        if ($path) {
-            return CONF_URL_TEST . "/themes/{$theme}/" .  ($path[0] == "/" ? mb_substr($path, 1) : $path);
-        }
-        return CONF_URL_TEST . "/themes/{$theme}";
-    }
     if ($path) {
-        return CONF_URL_BASE . "/themes/{$theme}/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
+        return CONF_URL . "/themes/{$theme}/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
     }
-    return CONF_URL_BASE . "/themes/{$theme}";
+    return CONF_URL . "/themes/{$theme}";
 }
-
-
-function image(?string $image, int $width, int $height = null): ?string
-{
-    if ($image) {
-        return url() . "/" . (new \Source\Support\Thumb())->make($image, $width, $height);
-    }
-    return null;
-}
-
 
 if (!function_exists('csrf_field')) {
 
@@ -161,26 +145,11 @@ if (!function_exists('csrf_verify')) {
     }
 }
 
-
 if (!function_exists('session')) {
 
     function session()
     {
         return new Session();
-    }
-}
-
-
-if (!function_exists('auth')) {
-
-    function auth()
-    {
-        $session = new Session();
-        if (!$session->has("authUser")) {
-            return null;
-        }
-        
-        return User::find($session->authUser);
     }
 }
 
@@ -194,17 +163,16 @@ if (!function_exists("errors_validation")) {
     function errors_validation()
     {
 
-
-        if (session()->errors) {
+        if (session()->has('errors')) {
             $errors = session()->errors;
             session()->unset("error");
             foreach ($errors as $key => $value) {
-                echo "<p  class='text-dark'>{$value}</p>";
+                echo "<p  class='text-dark'>{$value[0]}</p>";
             }
             return;
         }
 
-        if(session()->message){
+        if(session()->has('message')){
             $message = session()->message;
             session()->unset("message");
             return "<p  class='text-dark'>{$message}</p>";
@@ -246,27 +214,17 @@ function passwd(string $password): string
     if (!empty(password_get_info($password)['algo'])) {
         return $password;
     }
-
     return password_hash($password, CONF_PASSWD_ALGO, CONF_PASSWD_OPTION);
 }
 
-
-function format_money(string $data): float
+function auth(): ?\Source\Models\User
 {
-    if (strpos($data, ".")) {
-        $data = str_replace(".", "", $data);
-    }
-    if (strpos($data, ",")) {
-        $data = str_replace(",", ".", $data);
-    }
-    if(strpos($data, "$")){
-        $data = str_replace("R$", " ", $data);
-    }
-
-    return $data;
+    return Auth::auth();
 }
 
-function money(float $value): string
+function name($name): string
 {
-    return number_format($value, 2, ',', '.');
+    $name = explode(' ', $name);
+    return $name[0];
 }
+
