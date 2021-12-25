@@ -4,7 +4,7 @@ A aplicação foi desenvolvida em php puro, usando alguns plugin é template do 
 
 ### Configuração
 <div>
-Modifique o volume:
+Modifique o volume do nginx:
 <p> - "adicione o caminho do arquivo:/var/www/html/" </p>
 </div>
 <div>
